@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}會員登入 - Django Blog{% endblock %}
+
+{% block content %}
+<main class="glass-card" style="width: 90%; max-width: 440px; padding: 3rem 2.5rem; text-align: center;">
+    <h2 class="form-title" style="margin-bottom: 0.5rem;">會員登入</h2>
+    <p class="form-subtitle" style="margin-bottom: 2rem;">歡迎回來！請登入以發表新的文章</p>
+    
+    <form method="post" action="">
+        {% csrf_token %}
+        
+        {% if form.non_field_errors or form.errors %}
+            <div class="error-message" style="margin-bottom: 1.5rem; text-align: center;">
+                帳號或密碼輸入錯誤，請重試。
+            </div>
+        {% endif %}
+        
+        <div class="form-group">
+            <label class="form-label" for="id_username">使用者名稱</label>
+            <input type="text" name="username" autofocus required id="id_username" class="form-input" placeholder="請輸入使用者帳號">
+        </div>
+        
+        <div class="form-group" style="margin-bottom: 2rem;">
+            <label class="form-label" for="id_password">密碼</label>
+            <input type="password" name="password" required id="id_password" class="form-input" placeholder="請輸入您的密碼">
+        </div>
+        
+        <div class="btn-container">
+            <button type="submit" class="interactive-btn" style="border: none; width: 100%;">
+                <span>立即登入</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/>
+                </svg>
+            </button>
+        </div>
+        
+        {% if next %}
+            <input type="hidden" name="next" value="{{ next }}">
+        {% endif %}
+    </form>
+</main>
+{% endblock %}

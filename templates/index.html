@@ -1,19 +1,146 @@
-28. 
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title> Django CMS </title>
-    </head>
-    <body>
-        <h1> Welcome to MyBlog </h1>
-        <hr>
-        {{ posts }}
-        {% for post in posts %}
-            <h1> {{ post.title }}</h1>
-            <small> {{ post.content }} </small>
-            <hr/>
-            <h6> {{ post.slug }} | {{post.pub_date}} </h6>
-        {% endfor %}
-        <h3>現在時間: {{ now }}</h3>
-    </body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}首頁 - Django Blog{% endblock %}
+
+{% block content %}
+    <!-- Core Layout Card (Greeting & Controls) -->
+    <main class="glass-card">
+        <div class="brand-badge" id="badge" style="margin-bottom: 2rem;">
+            <span class="brand-dot"></span>
+            <span>Origin: Alpha</span>
+        </div>
+
+        <div class="title-wrapper" style="margin-bottom: 1rem; height: 72px; display: flex; align-items: center; justify-content: center;">
+            <h1 class="title-greeting" id="greeting" onclick="cycleLanguage()" style="cursor: pointer; user-select: none;">Hello, World!</h1>
+        </div>
+
+        <p class="description" style="margin-bottom: 2rem;">
+            A beautiful start to something extraordinary. Click the text above or the button below to cycle through global greetings.
+        </p>
+
+        <div class="btn-container" style="margin-bottom: 1.5rem;">
+            <button class="interactive-btn" id="cycle-btn" onclick="cycleLanguage()" style="border: none;">
+                <span>Explore Languages</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                </svg>
+            </button>
+            <span class="lang-hint" id="lang-name">Language: English (US)</span>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid rgba(255, 255, 255, 0.08); margin: 1.5rem 0;">
+
+        <!-- Auth Actions inside Card -->
+        {% if user.is_authenticated %}
+            <div style="font-size: 0.9rem; color: var(--text-muted);">
+                歡迎回來，<strong style="color: var(--text-main);">{{ user.username }}</strong>！
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 1rem;">
+                    <a href="{% url 'create_post' %}" class="interactive-btn" style="text-decoration: none; width: 100%; max-width: 200px;">
+                        <span>撰寫新文章</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                    </a>
+                    
+                    <form action="{% url 'logout' %}" method="post" style="display: inline; margin-top: 4px;">
+                        {% csrf_token %}
+                        <button type="submit" style="background: none; border: none; color: #ff3366; cursor: pointer; font-size: 0.85rem; text-decoration: underline; font-family: inherit;">
+                            登出系統
+                        </button>
+                    </form>
+                </div>
+            </div>
+        {% else %}
+            <div style="font-size: 0.9rem;">
+                <a href="{% url 'login' %}" class="interactive-btn" style="text-decoration: none; background: rgba(255, 255, 255, 0.05); margin: 0 auto;">
+                    <span>會員登入</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/>
+                    </svg>
+                </a>
+            </div>
+        {% endif %}
+    </main>
+
+    <!-- Articles Section -->
+    <div style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 2rem; margin-top: 1rem;">
+        {% if posts %}
+            <h3 style="font-size: 1.2rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-color); margin-top: 2rem; margin-bottom: -0.5rem; text-align: center;">
+                最新部落格文章
+            </h3>
+            
+            {% for post in posts %}
+                <article class="glass-card" style="text-align: left; padding: 2.5rem 2rem; max-width: 540px; width: 90%;">
+                    <h2 style="font-size: 1.5rem; font-weight: 800; background: var(--primary-glow); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.5rem;">
+                        {{ post.title }}
+                    </h2>
+                    
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.5rem; font-weight: 600; letter-spacing: 0.5px;">
+                        作者: <span style="color: var(--accent-color);">{% if post.author %}{{ post.author.username }}{% else %}管理員{% endif %}</span> 
+                        &bull; 發布時間: {{ post.pub_date|date:"Y-m-d H:i" }} 
+                        &bull; Slug: {{ post.slug }}
+                    </div>
+                    
+                    <div class="post-content-body" style="color: var(--text-main); font-size: 0.95rem; line-height: 1.6; font-weight: 300;">
+                        {{ post.content|safe }}
+                    </div>
+                </article>
+            {% endfor %}
+        {% else %}
+            <div class="glass-card" style="padding: 2.5rem; text-align: center; max-width: 540px; width: 90%; color: var(--text-muted); font-size: 0.95rem; font-weight: 300;">
+                目前沒有任何文章。
+                {% if user.is_authenticated %}
+                    <br><a href="{% url 'create_post' %}" style="color: var(--accent-color); text-decoration: underline; display: inline-block; margin-top: 10px;">立即撰寫第一篇文章！</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        // Array of greeting objects representing translations
+        const greetings = [
+            { text: "Hello, World!", lang: "English", tag: "Origin: Alpha" },
+            { text: "¡Hola, Mundo!", lang: "Spanish / Español", tag: "Origen: Alfa" },
+            { text: "Bonjour, Monde!", lang: "French / Français", tag: "Origine: Alpha" },
+            { text: "Hallo, Welt!", lang: "German / Deutsch", tag: "Herkunft: Alpha" },
+            { text: "Ciao, Mondo!", lang: "Italian / Italiano", tag: "Origine: Alpha" },
+            { text: "Olá, Mundo!", lang: "Portuguese / Português", tag: "Origem: Alfa" },
+            { text: "こんにちは世界!", lang: "Japanese / 日本語", tag: "起源: アルファ" },
+            { text: "안녕하세요, 세상!", lang: "Korean / 한국어", tag: "기원: 알파" },
+            { text: "नमस्ते दुनिया!", lang: "Hindi / हिन्दी", tag: "उत्पत्ति: 알파" },
+            { text: "你好，世界！", lang: "Chinese / 中文", tag: "起源: 阿尔法" }
+        ];
+
+        let currentIndex = 0;
+
+        function cycleLanguage() {
+            currentIndex = (currentIndex + 1) % greetings.length;
+            const currentItem = greetings[currentIndex];
+            
+            const greetingEl = document.getElementById('greeting');
+            const langNameEl = document.getElementById('lang-name');
+            const badgeEl = document.querySelector('#badge span:last-child');
+
+            // CSS animation trigger via opacity and translation resetting
+            greetingEl.style.opacity = 0;
+            greetingEl.style.transform = 'translateY(8px)';
+            
+            setTimeout(() => {
+                // Update elements content
+                greetingEl.textContent = currentItem.text;
+                langNameEl.textContent = `Language: ${currentItem.lang}`;
+                badgeEl.textContent = currentItem.tag;
+                
+                // Animate back in
+                greetingEl.style.opacity = 1;
+                greetingEl.style.transform = 'translateY(0)';
+            }, 200);
+        }
+
+        // Initialize transition styles manually to support the cycle switch effect
+        document.getElementById('greeting').style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+    </script>
+{% endblock %}

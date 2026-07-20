@@ -1,24 +1,31 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 from article.models import Post
 from datetime import datetime
+
 # Create your views here.
 
-
-
 def index(request):
-    # posts = Post.objects.all()
-    # post_list = list()
-   
-    # for count, post in enumerate(posts):
-    #     post_list.append("#{}: {}<br><hr>".format(str(count), str(post)))
-    #     post_list.append("<small>{}</small><br><hr>".format(post.content))
-    #     post_list.append("<h6><i>{}</i></h6></br>".format(str(post.slug)))
-    #     post_list.append("<h6>{}</h6>".format(str(post.pub_date)))
-
-    # return HttpResponse(post_list)
-
     posts = Post.objects.all()
     now = datetime.now()
-
     return render(request, "index.html", {'posts': posts, 'now': now})
+
+@login_required
+def create_post(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        slug = request.POST.get('slug')
+        content = request.POST.get('content')
+        
+        if title and slug and content:
+            post = Post(
+                title=title,
+                slug=slug,
+                content=content,
+                author=request.user
+            )
+            post.save()
+            return redirect('index')
+            
+    return render(request, "article/create_post.html")

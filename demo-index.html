@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A premium, visually stunning Hello World landing page built with modern CSS glassmorphism, responsive layout, and interactive typography.">
+    <title>Hello World - Experience the Extraordinary</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Base Design System Tokens */
+        :root {
+            --bg-color: #080710;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --primary-glow: linear-gradient(135deg, #ff007b 0%, #9900ff 50%, #00f0ff 100%);
+            --text-main: #ffffff;
+            --text-muted: #8b8a9f;
+            --accent-color: #00f0ff;
+            --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated Background Gradients (Orbs) */
+        .bg-glow-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.15;
+            mix-blend-mode: screen;
+            animation: float 20s infinite ease-in-out alternate;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: #ff007b;
+            top: -10%;
+            left: -10%;
+            animation-duration: 25s;
+        }
+
+        .orb-2 {
+            width: 600px;
+            height: 600px;
+            background: #00f0ff;
+            bottom: -20%;
+            right: -10%;
+            animation-duration: 30s;
+        }
+
+        .orb-3 {
+            width: 400px;
+            height: 400px;
+            background: #9900ff;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-duration: 22s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                transform: translate(80px, 50px) scale(1.1);
+            }
+        }
+
+        /* Glassmorphism Container Card */
+        .glass-card {
+            position: relative;
+            z-index: 1;
+            width: 90%;
+            max-width: 540px;
+            padding: 3.5rem 2.5rem;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            transition: var(--transition-smooth);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 25px 60px rgba(153, 0, 255, 0.1);
+            transform: translateY(-4px);
+        }
+
+        /* Logo / Icon Area */
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent-color);
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .brand-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-color);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.9);
+                opacity: 0.6;
+            }
+            50% {
+                transform: scale(1.15);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0.9);
+                opacity: 0.6;
+            }
+        }
+
+        /* Greeting Text styles */
+        .title-wrapper {
+            position: relative;
+            margin-bottom: 1rem;
+            height: 72px; /* Prevent layout shifting */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .title-greeting {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: var(--primary-glow);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transition: var(--transition-smooth);
+            animation: textFadeIn 0.8s ease-out;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .title-greeting:hover {
+            filter: brightness(1.15);
+            transform: scale(1.03);
+        }
+
+        @keyframes textFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Subtitles & Descriptions */
+        .description {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+        }
+
+        /* Interactive Language Selector Buttons */
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .interactive-btn {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            max-width: 240px;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            text-decoration: none;
+        }
+
+        .interactive-btn:hover {
+            background: var(--primary-glow);
+            border-color: transparent;
+            box-shadow: 0 8px 25px rgba(153, 0, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .interactive-btn:active {
+            transform: translateY(0);
+        }
+
+        .lang-hint {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Decorative Grid Background */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .glass-card {
+                padding: 2.5rem 1.5rem;
+                width: 92%;
+            }
+            
+            .title-greeting {
+                font-size: 2.3rem;
+            }
+
+            .title-wrapper {
+                height: 56px;
+            }
+
+            .description {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Grid & Orbs for depth -->
+    <div class="bg-grid"></div>
+    <div class="bg-glow-container">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="glow-orb orb-3"></div>
+    </div>
+
+    <!-- Core Layout Card -->
+    <main class="glass-card">
+        <div class="brand-badge" id="badge">
+            <span class="brand-dot"></span>
+            <span>Origin: Alpha</span>
+        </div>
+
+        <div class="title-wrapper">
+            <h1 class="title-greeting" id="greeting" onclick="cycleLanguage()">Hello, World!</h1>
+        </div>
+
+        <p class="description">
+            A beautiful start to something extraordinary. Click the text above or the button below to cycle through global greetings.
+        </p>
+
+        <div class="btn-container">
+            <button class="interactive-btn" id="cycle-btn" onclick="cycleLanguage()">
+                <span>Explore Languages</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                </svg>
+            </button>
+            <span class="lang-hint" id="lang-name">Language: English (US)</span>
+        </div>
+    </main>
+
+    <script>
+        // Array of greeting objects representing translations
+        const greetings = [
+            { text: "Hello, World!", lang: "English", tag: "Origin: Alpha" },
+            { text: "¡Hola, Mundo!", lang: "Spanish / Español", tag: "Origen: Alfa" },
+            { text: "Bonjour, Monde!", lang: "French / Français", tag: "Origine: Alpha" },
+            { text: "Hallo, Welt!", lang: "German / Deutsch", tag: "Herkunft: Alpha" },
+            { text: "Ciao, Mondo!", lang: "Italian / Italiano", tag: "Origine: Alpha" },
+            { text: "Olá, Mundo!", lang: "Portuguese / Português", tag: "Origem: Alfa" },
+            { text: "こんにちは世界!", lang: "Japanese / 日本語", tag: "起源: アルファ" },
+            { text: "안녕하세요, 세상!", lang: "Korean / 한국어", tag: "기원: 알파" },
+            { text: "नमस्ते दुनिया!", lang: "Hindi / हिन्दी", tag: "उत्पत्ति: 알파" },
+            { text: "你好，世界！", lang: "Chinese / 中文", tag: "起源: 阿尔法" }
+        ];
+
+        let currentIndex = 0;
+
+        function cycleLanguage() {
+            currentIndex = (currentIndex + 1) % greetings.length;
+            const currentItem = greetings[currentIndex];
+            
+            const greetingEl = document.getElementById('greeting');
+            const langNameEl = document.getElementById('lang-name');
+            const badgeEl = document.querySelector('#badge span:last-child');
+
+            // CSS animation trigger via opacity and translation resetting
+            greetingEl.style.opacity = 0;
+            greetingEl.style.transform = 'translateY(8px)';
+            
+            setTimeout(() => {
+                // Update elements content
+                greetingEl.textContent = currentItem.text;
+                langNameEl.textContent = `Language: ${currentItem.lang}`;
+                badgeEl.textContent = currentItem.tag;
+                
+                // Animate back in
+                greetingEl.style.opacity = 1;
+                greetingEl.style.transform = 'translateY(0)';
+            }, 200);
+        }
+
+        // Initialize transition styles manually to support the cycle switch effect
+        document.getElementById('greeting').style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+    </script>
+</body>
+</html>
