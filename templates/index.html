@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+<<<<<<< HEAD
 {% block title %}首頁 - Django Blog{% endblock %}
 
 {% block content %}
@@ -144,3 +145,14 @@
         document.getElementById('greeting').style.transition = 'opacity 0.2s ease, transform 0.2s ease';
     </script>
 {% endblock %}
+=======
+
+{% block 'content' %}
+    {% for post in posts %}
+        <h1> {{ post.title }}</h1>
+        <small> {{ post.content }} </small>
+        <hr/>
+        <h6> {{ post.slug }} | {{post.pub_date}} </h6>
+    {% endfor %}
+{% endblock 'content' %}
+>>>>>>> 891f7ddfe4749470c869b6eec1a967483ba85310
